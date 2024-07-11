@@ -1,6 +1,7 @@
 package com.dalixinc.main;
 
 import com.dalixinc.gamechar.Player;
+import com.dalixinc.gamechar.Shark;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
-    private static final int FPS = 90;  // Frames per second
+    private static final int FPS = 120;  // Frames per second
     final int originalTileSize = 16;   // 16 x 16 tiles
     final int  scale = 5;               // 3x scale
     public final int tileSize = originalTileSize * scale;  // 48 x 48 pixels
@@ -16,7 +17,12 @@ public class GamePanel extends JPanel implements Runnable {
     // BASIC SETUP
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+
+    // GAMECHARS SETUP
     Player player = new Player(this, keyHandler);
+    Shark shark = new Shark(this);
+    Shark shark2 = new Shark(this);
+
 
     // SET PLAYER'S INITIAL POSITION
     int playerX = 100;
@@ -33,6 +39,14 @@ public class GamePanel extends JPanel implements Runnable {
         setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable( true );
+
+        //SHARK PROPERTIES
+        shark.hSpeed= 2;
+        shark2.setGraphics("shark1tgpt_left", "shark1tgpt_right");
+        shark2.y = shark2.y - 400;
+        shark2.hSpeed = 5;
+        System.out.println("Shark2: " + shark2.toString());
+
         System.out.println("Setting up game...");
     }
 
@@ -88,6 +102,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UPDATE GAME STATE
         player.update();
+        shark.update();
+        shark2.update();
     }
 
     public void paintComponent( Graphics g ) {
@@ -96,6 +112,8 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
         player.draw(g2d);
+        shark.draw(g2d);
+        shark2.draw(g2d);
         // For Test only
 /*        g2d.setColor( Color.WHITE );
         g2d.fillRect( playerX, playerY, tileSize, tileSize);*/

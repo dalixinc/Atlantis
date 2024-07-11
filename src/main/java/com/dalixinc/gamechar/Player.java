@@ -32,10 +32,10 @@ public class Player extends GameChar {
         // Load player images
         String path = "/sprites/diver/";
         try {
-            right1 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos1b.png" ) );
-            right2 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos2b.png") );
-            right3 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos3b.png" ) );
-            right4 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos4b.png") );
+            right1 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos1c.png" ) );
+            right2 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos2c.png") );
+            right3 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos3c.png" ) );
+            right4 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos4c.png") );
 
         } catch (IOException e) {
             e.printStackTrace();

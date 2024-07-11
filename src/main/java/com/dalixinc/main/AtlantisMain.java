@@ -15,6 +15,9 @@ public class AtlantisMain {
 
         public static final int SPECTRUM_SCALE_FACTOR = 5;
 
+        public static final int ACTUAL_WIDTH = spectrumWidthPixels * SPECTRUM_SCALE_FACTOR;
+        public static final int ACTUAL_HEIGHT = spectrumHeightPixels * SPECTRUM_SCALE_FACTOR;
+
         public static void main(String[] args) {
            EventQueue.invokeLater(() -> {
 

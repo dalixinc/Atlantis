@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /** This is the main class for the Atlantis game engine.
- *
+ * <p>
  * © 2024 Dalix, Inc. All rights reserved.
  * Unauthorized copying or reproduction of this file is prohibited.
 */

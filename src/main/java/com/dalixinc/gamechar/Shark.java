@@ -10,11 +10,9 @@ import java.io.IOException;
 
 public class Shark extends GameChar {
 
-    BufferedImage left1, right1;
+    public BufferedImage left1, right1;
 
     int moveCounter = 0;
-
-    public int vSpeed, hSpeed;
 
     GamePanel gamePanel;
     public Shark(GamePanel gamePanel) {
@@ -77,6 +75,10 @@ public class Shark extends GameChar {
         speed = (speed == 0) ? 2 : speed;
         hSpeed = (hSpeed == 0) ? 4 : hSpeed;
         vSpeed =  (vSpeed == 0) ? 2 : vSpeed;
+        //width = imageBasedOnSuppliedSize ? left1.getWidth() : gamePanel.tileSize;
+        //height = imageBasedOnSuppliedSize ? left1.getHeight() : gamePanel.tileSize;
+        width =gamePanel.tileSize;  // The default
+        height = gamePanel.tileSize; // The default
         direction = "left";
     }
 
@@ -114,17 +116,17 @@ public class Shark extends GameChar {
 
         if (moveCounter == 2) {
             moveCounter = 0;
-            if (x == 0) {
+            if (x <= 0) {
                 direction = "right";
                 hSpeed *= -1;
-            } else if (x == AtlantisMain.ACTUAL_WIDTH - gamePanel.tileSize) {
+            } else if (x >= AtlantisMain.ACTUAL_WIDTH - gamePanel.tileSize) {
                 direction = "left";
                 hSpeed *= -1;
             }
 
-            if (y == 0) {
+            if (y <= 0) {
                 vSpeed *= -1;
-            } else if (y == AtlantisMain.ACTUAL_HEIGHT - gamePanel.tileSize) {
+            } else if (y >= AtlantisMain.ACTUAL_HEIGHT - gamePanel.tileSize) {
                 vSpeed *= -1;
             }
 
@@ -143,6 +145,8 @@ public class Shark extends GameChar {
             img = right1;
         }
 
-        g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2d.drawImage(img, x, y, (int)width, (int)height, null);
+        //g2d.drawImage(img, x, y, img.getWidth(), img.getHeight(), null);
+        //g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 }

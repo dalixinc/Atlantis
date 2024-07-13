@@ -2,6 +2,7 @@ package com.dalixinc.main;
 
 import com.dalixinc.gamechar.Player;
 import com.dalixinc.gamechar.Shark;
+import com.dalixinc.objects.Land;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,8 @@ public class GamePanel extends JPanel implements Runnable {
     Player player = new Player(this, keyHandler);
     Shark shark = new Shark(this);
     Shark shark2 = new Shark(this);
+    Shark shark3 = new Shark(this);
+    Land land = new Land(this);
 
 
     // SET PLAYER'S INITIAL POSITION
@@ -42,10 +45,20 @@ public class GamePanel extends JPanel implements Runnable {
 
         //SHARK PROPERTIES
         shark.hSpeed= 2;
+        shark.width = shark.left1.getWidth();
+        shark.height = shark.left1.getHeight();
+
         shark2.setGraphics("shark1tgpt_left", "shark1tgpt_right");
         shark2.y = shark2.y - 400;
         shark2.hSpeed = 5;
-        System.out.println("Shark2: " + shark2.toString());
+
+        shark3.setGraphics("shark_transparentc1left", "shark_transparentc1right");
+        shark3.y = shark.y - 700;
+        shark3.hSpeed = 3;
+        shark3.vSpeed = 1;
+        shark3.width = shark3.left1.getWidth() * 0.5;
+        shark3.height = shark3.left1.getHeight() * 0.5;
+        //System.out.println("Shark2: " + shark2.toString());
 
         System.out.println("Setting up game...");
     }
@@ -101,9 +114,11 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         // UPDATE GAME STATE
-        player.update();
+        land.update();
         shark.update();
         shark2.update();
+        shark3.update();
+        player.update();
     }
 
     public void paintComponent( Graphics g ) {
@@ -111,9 +126,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        player.draw(g2d);
+        land.draw(g2d);
         shark.draw(g2d);
         shark2.draw(g2d);
+        shark3.draw(g2d);
+        player.draw(g2d);
         // For Test only
 /*        g2d.setColor( Color.WHITE );
         g2d.fillRect( playerX, playerY, tileSize, tileSize);*/

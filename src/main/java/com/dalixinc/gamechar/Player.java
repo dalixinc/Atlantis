@@ -13,6 +13,7 @@ public class Player extends GameChar {
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    public int lives = 0;
 
     // DEBUG
     boolean showCollisionRect = false;
@@ -44,6 +45,7 @@ public class Player extends GameChar {
         y = 100;
         speed = 5;
         direction = "down";
+        lives = 5;
     }
 
     public void getPlayerImage() {
@@ -113,6 +115,7 @@ public class Player extends GameChar {
 
                     if (!isDead && gamePanel.collisionChecker.checkCollision(rMe, rThem)) {
                         isDead = true;
+                        lives--;
                         gamePanel.stopMusic();
                         gamePanel.playSFX(8);
 
@@ -125,6 +128,8 @@ public class Player extends GameChar {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
+                            if (lives == 0)
+                                gamePanel.gameUI.gameOver = true;
                             x = (int)(800 * Math.random());
                             y = (int)(800 * Math.random());
                             isDead = false;

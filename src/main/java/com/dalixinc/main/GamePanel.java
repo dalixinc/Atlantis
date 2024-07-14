@@ -11,10 +11,20 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
-    private static final int FPS = 120;  // Frames per second
+    public static final int FPS = 120;  // Frames per second
     final int originalTileSize = 16;   // 16 x 16 tiles
     public final int  scale = 5;               // 3x scale
     public final int tileSize = originalTileSize * scale;  // 48 x 48 pixels
+    final int maxScreenCol = 16;                    // 16 columns - 16 x 48 = 768 pixels   - Needs to be updated for Atlantis
+    final int maxScreenRow = 12;                    // 12 rows - 12 x 48 = 576 pixels - Needs to be updated for Atlantis
+    public  int screenWidth = tileSize * maxScreenCol; // 768 pixels - Needs to be updated for Atlantis
+    public  int screenHeight = tileSize * maxScreenRow; // 576 pixels - - Needs to be updated for Atlantis
+
+    // WORLD SETTINGS
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final  int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     // SOUND SETTINGS
     Sound music = new Sound();
@@ -23,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     // BASIC SETUP
     KeyHandler keyHandler = new KeyHandler();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public GameUI gameUI = new GameUI(this);
     Thread gameThread;
 
     // GAMECHARS SETUP
@@ -47,6 +58,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+
+        // SET SCREEN DETAILS FOR ATLANTIS
+       screenWidth = AtlantisMain.spectrumWidthPixels * AtlantisMain.SPECTRUM_SCALE_FACTOR;
+       screenHeight = AtlantisMain.spectrumHeightPixels * AtlantisMain.SPECTRUM_SCALE_FACTOR;
     }
     public void setUpGame() {
 
@@ -144,11 +159,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        // DRAW LAND
         land.draw(g2d);
+
+        // DRAW SHARKS
         sharks[0].draw(g2d);
         sharks[1].draw(g2d);
         sharks[2].draw(g2d);
+
+        // DRAW PLAYER
         player.draw(g2d);
+
+        // DRAW UI
+        gameUI.draw(g2d);
+
+
         // For Test only
 /*        g2d.setColor( Color.WHITE );
         g2d.fillRect( playerX, playerY, tileSize, tileSize);*/

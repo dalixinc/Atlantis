@@ -22,6 +22,7 @@ public class Sound {
         soundURLs[7] = getClass().getResource("/sound/dun-shot-1.wav");
         soundURLs[8] = getClass().getResource("/sound/wilhelm.wav");
         soundURLs[9] = getClass().getResource("/sound/klingon_disruptor_clean.wav");
+        soundURLs[10] = getClass().getResource("/sound/pacman_death.wav");
 
     }
 

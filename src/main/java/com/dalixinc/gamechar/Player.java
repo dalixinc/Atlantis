@@ -14,11 +14,27 @@ public class Player extends GameChar {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    // DEBUG
+    boolean showCollisionRect = true;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+
         setDefaultValues();
         getPlayerImage();
+
+        //width = gamePanel.tileSize;
+        //height = gamePanel.tileSize;
+
+        width = 48.0 * 2;
+        height = 32.0 * 2;
+
+        //width = 48.0 * gamePanel.scale;
+        //height = 32.0 * gamePanel.scale;
+        imageBasedOnSuppliedSize = true;
+
+        solidArea = new Rectangle(0, 0, (int)width, (int)height);
     }
 
     public void setDefaultValues() {
@@ -36,7 +52,7 @@ public class Player extends GameChar {
             right2 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos2c.png") );
             right3 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos3c.png" ) );
             right4 = ImageIO.read( getClass().getResourceAsStream( path + "diver1_pos4c.png") );
-
+            System.out.printf("Diver size: - Width %s  - Height %s\n", right1.getWidth(), right1.getHeight());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +94,25 @@ public class Player extends GameChar {
                 spriteCounter = 0;
             }
 
+            // CHECK TILE COLLISION
+            ///collisionOn = false; // Not yet used
+            if (collisionOn) {
+                for (int n = 0; n < gamePanel.sharks.length; n++) {
 
+                    int tempMeX = (int)(solidArea.getX() + x);
+                    int tempMeY = (int)(int)(solidArea.getY() + y);
+                    Rectangle rMe = new Rectangle(tempMeX, tempMeY, (int)solidArea.getWidth(), (int)solidArea.getHeight());
+
+                    int tempX = (int)(gamePanel.sharks[n].x + gamePanel.sharks[n].solidArea.getX());
+                    int tempY = (int)(gamePanel.sharks[n].y + gamePanel.sharks[n].solidArea.getY());
+                    int tempW = (int)(gamePanel.sharks[n].solidArea.getWidth());
+                    int tempH = (int)(gamePanel.sharks[n].solidArea.getHeight());
+                    Rectangle rThem = new Rectangle(tempX, tempY, tempW, tempH);
+
+                    if (gamePanel.collisionChecker.checkCollision(rMe, rThem))
+                        System.exit(0);
+                }
+            }
 
 /*            if (spriteCounter > 10) {
                 spriteCounter = 0;
@@ -141,6 +175,12 @@ public class Player extends GameChar {
             break;
         }
 
-        g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+       // g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2d.drawImage(img, x, y, (int)width, (int)height, null);
+
+        if (showCollisionRect) {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
+        }
     }
 }

@@ -30,6 +30,10 @@ public class KeyHandler implements KeyListener {
                     rightPressed = true;
                     System.out.println("D key pressed");
                     break;
+                case KeyEvent.VK_0:
+                    System.out.println("0 key pressed - Collision detection on!!");
+                    //game   player.collisionOn = true;
+                    break;
                 case KeyEvent.VK_SPACE:
                     spacePressed = true;
                     System.out.println("Space key pressed");

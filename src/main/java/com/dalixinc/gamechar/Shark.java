@@ -15,6 +15,9 @@ public class Shark extends GameChar {
     int moveCounter = 0;
 
     GamePanel gamePanel;
+
+    boolean showCollisionRect = true;
+
     public Shark(GamePanel gamePanel) {
         this (gamePanel, 0, 0, 0, 0, 0, "left");
     }
@@ -148,5 +151,10 @@ public class Shark extends GameChar {
         g2d.drawImage(img, x, y, (int)width, (int)height, null);
         //g2d.drawImage(img, x, y, img.getWidth(), img.getHeight(), null);
         //g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+
+        if (showCollisionRect) {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
+        }
     }
 }

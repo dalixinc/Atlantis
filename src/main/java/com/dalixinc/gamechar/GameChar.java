@@ -1,5 +1,6 @@
 package com.dalixinc.gamechar;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GameChar {
@@ -15,5 +16,9 @@ public class GameChar {
 
     public int spriteCounter = 0;
     public  int spriteNum = 1;
+
+    // COLLISION INFO
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
 
 }

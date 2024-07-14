@@ -12,18 +12,21 @@ public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
     private static final int FPS = 120;  // Frames per second
     final int originalTileSize = 16;   // 16 x 16 tiles
-    final int  scale = 5;               // 3x scale
+    public final int  scale = 5;               // 3x scale
     public final int tileSize = originalTileSize * scale;  // 48 x 48 pixels
 
     // BASIC SETUP
     KeyHandler keyHandler = new KeyHandler();
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
     Thread gameThread;
 
     // GAMECHARS SETUP
     Player player = new Player(this, keyHandler);
-    Shark shark = new Shark(this);
-    Shark shark2 = new Shark(this);
-    Shark shark3 = new Shark(this);
+    public Shark[] sharks = new Shark[3];
+    //Shark shark = new Shark(this);
+    //sharks[0] = shark;
+    //Shark shark2 = new Shark(this);
+    //Shark shark3 = new Shark(this);
     Land land = new Land(this);
 
 
@@ -44,23 +47,31 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable( true );
 
         //SHARK PROPERTIES
-        shark.hSpeed= 2;
-        shark.width = shark.left1.getWidth();
-        shark.height = shark.left1.getHeight();
+        sharks[0] = new Shark(this);
+        sharks[0].hSpeed= 2;
+        sharks[0].width = sharks[0].left1.getWidth();
+        sharks[0].height = sharks[0].left1.getHeight();
+        sharks[0].solidArea = new Rectangle(0 + 8, 0, (int)sharks[0].width, (int)sharks[0].height - 8);
 
-        shark2.setGraphics("shark1tgpt_left", "shark1tgpt_right");
-        shark2.y = shark2.y - 400;
-        shark2.hSpeed = 5;
+        sharks[1] = new Shark(this);
+        sharks[1].setGraphics("shark1tgpt_left", "shark1tgpt_right");
+        sharks[1].y = sharks[1].y - 400;
+        sharks[1].hSpeed = 5;
+        sharks[1].solidArea = new Rectangle(0, 0 + 8, (int)sharks[1].width, (int)sharks[1].height - 8);
 
-        shark3.setGraphics("shark_transparentc1left", "shark_transparentc1right");
-        shark3.y = shark.y - 700;
-        shark3.hSpeed = 3;
-        shark3.vSpeed = 1;
-        shark3.width = shark3.left1.getWidth() * 0.5;
-        shark3.height = shark3.left1.getHeight() * 0.5;
+        sharks[2] = new Shark(this);
+        sharks[2].setGraphics("shark_transparentc1left", "shark_transparentc1right");
+        sharks[2].y = sharks[2].y - 700;
+        sharks[2].hSpeed = 3;
+        sharks[2].vSpeed = 1;
+        sharks[2].width = sharks[2].left1.getWidth() * 0.75;
+        sharks[2].height = sharks[2].left1.getHeight() * 0.75;
+        sharks[2].solidArea = new Rectangle(0, 0, (int)sharks[2].width - 8, (int)sharks[2].height);
+
         //System.out.println("Shark2: " + shark2.toString());
 
         System.out.println("Setting up game...");
+        player.collisionOn = true;
     }
 
     public void startGameThread() {
@@ -115,10 +126,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UPDATE GAME STATE
         land.update();
-        shark.update();
-        shark2.update();
-        shark3.update();
+        sharks[0].update();
+        sharks[1].update();
+        sharks[2].update();
         player.update();
+
     }
 
     public void paintComponent( Graphics g ) {
@@ -127,9 +139,9 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
         land.draw(g2d);
-        shark.draw(g2d);
-        shark2.draw(g2d);
-        shark3.draw(g2d);
+        sharks[0].draw(g2d);
+        sharks[1].draw(g2d);
+        sharks[2].draw(g2d);
         player.draw(g2d);
         // For Test only
 /*        g2d.setColor( Color.WHITE );

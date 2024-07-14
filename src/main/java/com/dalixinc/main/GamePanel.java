@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // GAMECHARS SETUP
     Player player = new Player(this, keyHandler);
-    public Shark[] sharks = new Shark[3];
+    public Shark[] sharks = new Shark[10];
     Land land = new Land(this);
 
 
@@ -86,6 +86,24 @@ public class GamePanel extends JPanel implements Runnable {
         sharks[2].width = sharks[2].left1.getWidth() * 0.75;
         sharks[2].height = sharks[2].left1.getHeight() * 0.75;
         sharks[2].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[2].width - 48, (int)sharks[2].height - 32);
+
+        sharks[3] = new Shark(this);
+        sharks[3].setGraphics("shark_transparentc1left", "shark_transparentc1right");
+        sharks[3].y = sharks[2].y + 700;
+        sharks[3].hSpeed = 1;
+        sharks[3].vSpeed = 1;
+        sharks[3].width = sharks[3].left1.getWidth();
+        sharks[3].height = sharks[3].left1.getHeight();
+        sharks[3].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[3].width - 48, (int)sharks[3].height - 32);
+
+        sharks[4] = new Shark(this);
+        sharks[4].setGraphics("shark_transparentc1left", "shark_transparentc1right");
+        sharks[4].y = sharks[2].y + 250;
+        sharks[4].hSpeed = 6;
+        sharks[4].vSpeed = 3;
+        sharks[4].width = sharks[4].left1.getWidth() * 0.5;
+        sharks[4].height = sharks[4].left1.getHeight() * 0.5;
+        sharks[4].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[4].width - 60, (int)sharks[4].height - 24);
 
         player.collisionOn = true;
 
@@ -146,10 +164,18 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         // UPDATE GAME STATE
+
+        // UUPDATE LAND
         land.update();
-        sharks[0].update();
-        sharks[1].update();
-        sharks[2].update();
+
+        // UPDATE SHARKS
+        for (int i = 0; i < sharks.length; i++) {
+            if (sharks[i] != null) {
+                sharks[i].update();
+            }
+        }
+
+       // UPDATE PLAYER
         player.update();
 
     }
@@ -163,9 +189,11 @@ public class GamePanel extends JPanel implements Runnable {
         land.draw(g2d);
 
         // DRAW SHARKS
-        sharks[0].draw(g2d);
-        sharks[1].draw(g2d);
-        sharks[2].draw(g2d);
+        for( int i = 0; i < sharks.length; i++ ) {
+            if (sharks[i]  != null) {
+                sharks[i].draw(g2d);
+            }
+        }
 
         // DRAW PLAYER
         player.draw(g2d);

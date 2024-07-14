@@ -102,7 +102,9 @@ public class Player extends GameChar {
             ///collisionOn = false; // Not yet used
             if (collisionOn) {
                 for (int n = 0; n < gamePanel.sharks.length; n++) {
-
+                    if (gamePanel.sharks[n] == null) {
+                        continue;
+                    }
                     int tempMeX = (int)(solidArea.getX() + x);
                     int tempMeY = (int)(int)(solidArea.getY() + y);
                     Rectangle rMe = new Rectangle(tempMeX, tempMeY, (int)solidArea.getWidth(), (int)solidArea.getHeight());

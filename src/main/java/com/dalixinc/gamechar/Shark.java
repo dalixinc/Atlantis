@@ -16,7 +16,7 @@ public class Shark extends GameChar {
 
     GamePanel gamePanel;
 
-    boolean showCollisionRect = true;
+    boolean showCollisionRect = false;
 
     public Shark(GamePanel gamePanel) {
         this (gamePanel, 0, 0, 0, 0, 0, "left");

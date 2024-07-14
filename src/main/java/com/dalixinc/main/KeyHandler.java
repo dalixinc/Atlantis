@@ -70,4 +70,40 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
         // Not used
     }
+
+
+    //ACCESSOR METHODS
+
+    public boolean isUpPressed() {
+        return upPressed;
+    }
+    public boolean isDownPressed() {
+        return downPressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    //MUTATOR METHODS
+
+    public void setUpPressed(boolean upPressed) {
+        this.upPressed = upPressed;
+    }
+    public void setDownPressed(boolean downPressed) {
+        this.downPressed = downPressed;
+    }
+
+    public void setLeftPressed(boolean leftPressed) {
+        this.leftPressed = leftPressed;
+    }
+
+    public void setRightPressed(boolean rightPressed) {
+        this.rightPressed = rightPressed;
+    }
+
+
 }

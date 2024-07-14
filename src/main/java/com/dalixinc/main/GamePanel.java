@@ -3,6 +3,7 @@ package com.dalixinc.main;
 import com.dalixinc.gamechar.Player;
 import com.dalixinc.gamechar.Shark;
 import com.dalixinc.objects.Land;
+import com.dalixinc.utils.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int  scale = 5;               // 3x scale
     public final int tileSize = originalTileSize * scale;  // 48 x 48 pixels
 
+    // SOUND SETTINGS
+    Sound music = new Sound();
+    Sound sfx = new Sound();
+
     // BASIC SETUP
     KeyHandler keyHandler = new KeyHandler();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -23,10 +28,6 @@ public class GamePanel extends JPanel implements Runnable {
     // GAMECHARS SETUP
     Player player = new Player(this, keyHandler);
     public Shark[] sharks = new Shark[3];
-    //Shark shark = new Shark(this);
-    //sharks[0] = shark;
-    //Shark shark2 = new Shark(this);
-    //Shark shark3 = new Shark(this);
     Land land = new Land(this);
 
 
@@ -34,30 +35,33 @@ public class GamePanel extends JPanel implements Runnable {
     int playerX = 100;
     int playerY = 100;
     int playerSpeed = 4;
-    public void setUpGame() {
+
+   public GamePanel() {
 
         // APPEARS TO IGNORE THIS
         int windowX = AtlantisMain.spectrumWidthPixels * AtlantisMain.SPECTRUM_SCALE_FACTOR;
         int windowY= AtlantisMain.spectrumHeightPixels * AtlantisMain.SPECTRUM_SCALE_FACTOR;
         setPreferredSize(new Dimension(windowX, windowY));
 
-        setBackground(Color.BLUE);
-        setDoubleBuffered(true);
+        this.setBackground(Color.BLUE);
+        this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
-        this.setFocusable( true );
+        this.setFocusable(true);
+    }
+    public void setUpGame() {
 
         //SHARK PROPERTIES
         sharks[0] = new Shark(this);
         sharks[0].hSpeed= 2;
         sharks[0].width = sharks[0].left1.getWidth();
         sharks[0].height = sharks[0].left1.getHeight();
-        sharks[0].solidArea = new Rectangle(0 + 8, 0, (int)sharks[0].width, (int)sharks[0].height - 8);
+        sharks[0].solidArea = new Rectangle(0 + 24, 0 + 8, (int)sharks[0].width - 32, (int)sharks[0].height - 16);
 
         sharks[1] = new Shark(this);
         sharks[1].setGraphics("shark1tgpt_left", "shark1tgpt_right");
         sharks[1].y = sharks[1].y - 400;
         sharks[1].hSpeed = 5;
-        sharks[1].solidArea = new Rectangle(0, 0 + 8, (int)sharks[1].width, (int)sharks[1].height - 8);
+        sharks[1].solidArea = new Rectangle(0 ,  0 + 16, (int)sharks[1].width - 8, (int)sharks[1].height - 32);
 
         sharks[2] = new Shark(this);
         sharks[2].setGraphics("shark_transparentc1left", "shark_transparentc1right");
@@ -66,12 +70,14 @@ public class GamePanel extends JPanel implements Runnable {
         sharks[2].vSpeed = 1;
         sharks[2].width = sharks[2].left1.getWidth() * 0.75;
         sharks[2].height = sharks[2].left1.getHeight() * 0.75;
-        sharks[2].solidArea = new Rectangle(0, 0, (int)sharks[2].width - 8, (int)sharks[2].height);
+        sharks[2].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[2].width - 48, (int)sharks[2].height - 32);
 
-        //System.out.println("Shark2: " + shark2.toString());
+        player.collisionOn = true;
+
+        // START MUSIC
+        playMusic(0);
 
         System.out.println("Setting up game...");
-        player.collisionOn = true;
     }
 
     public void startGameThread() {
@@ -147,7 +153,23 @@ public class GamePanel extends JPanel implements Runnable {
 /*        g2d.setColor( Color.WHITE );
         g2d.fillRect( playerX, playerY, tileSize, tileSize);*/
         g2d.dispose();
-
     }
+
+    // SOUND CONTROL
+    public void playMusic(int i) {
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playSFX(int i) {
+        sfx.setFile(i);
+        sfx.play();
+    }
+
 }
 

@@ -68,11 +68,11 @@ public class Land {
                 g2d.drawImage(img, tempX, y, 256, 32, null);
                 g2d.drawImage(lowland, tempX, lowY, 256, 32, null);
                 //g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
-                System.out.println("Drawing land image: x = " + tempX + ", y = " + y + ", i = " + i);
+                ////System.out.println("Drawing land image: x = " + tempX + ", y = " + y + ", i = " + i);
                 tempX += 256;
             } else if (direction == "right") {
                 // Not yet implemented
-                System.out.println("Right direction not yet implemented");
+                ////System.out.println("Right direction not yet implemented");
             }
         }
     }

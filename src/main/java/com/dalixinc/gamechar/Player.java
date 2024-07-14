@@ -15,7 +15,9 @@ public class Player extends GameChar {
     KeyHandler keyHandler;
 
     // DEBUG
-    boolean showCollisionRect = true;
+    boolean showCollisionRect = false;
+
+    public volatile boolean isDead = false;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
@@ -109,8 +111,40 @@ public class Player extends GameChar {
                     int tempH = (int)(gamePanel.sharks[n].solidArea.getHeight());
                     Rectangle rThem = new Rectangle(tempX, tempY, tempW, tempH);
 
-                    if (gamePanel.collisionChecker.checkCollision(rMe, rThem))
-                        System.exit(0);
+                    if (!isDead && gamePanel.collisionChecker.checkCollision(rMe, rThem)) {
+                        isDead = true;
+                        gamePanel.stopMusic();
+                        gamePanel.playSFX(8);
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+
+                            try {
+                               Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            x = (int)(800 * Math.random());
+                            y = (int)(800 * Math.random());
+                            isDead = false;
+                            gamePanel.playMusic(0);
+                        }
+                    }.start();
+
+                    //Usiing anonymous threads
+                    /* new Thread(new Runnable() {
+                            public  void run() {
+                                System.out.println("Runner");
+                            }
+                        }).start();
+
+                        new Thread() {
+                            public  void run() {
+                                System.out.println("Runner");
+                            }
+                        }.start(); */
+                    }
                 }
             }
 
@@ -176,7 +210,17 @@ public class Player extends GameChar {
         }
 
        // g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2d.drawImage(img, x, y, (int)width, (int)height, null);
+        System.out.println("ARE YOU DEAD???? " + isDead);
+        if (isDead) {
+            g2d.setColor(Color.RED);
+            g2d.fillRect(x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
+            g2d.setColor(Color.WHITE);
+            g2d.drawString("You are DEAD!!", x + 5, y + 32);
+            System.out.println("YOU ARE DEAD!!!");
+
+        } else {
+            g2d.drawImage(img, x, y, (int) width, (int) height, null);
+        }
 
         if (showCollisionRect) {
             g2d.setColor(Color.RED);

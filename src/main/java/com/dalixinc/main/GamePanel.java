@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     Sound sfx = new Sound();
 
     // BASIC SETUP
-    KeyHandler keyHandler = new KeyHandler();
+    KeyHandler keyHandler = new KeyHandler(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public GameUI gameUI = new GameUI(this);
     Thread gameThread;
@@ -40,6 +40,9 @@ public class GamePanel extends JPanel implements Runnable {
     Player player = new Player(this, keyHandler);
     public Shark[] sharks = new Shark[10];
     Land land = new Land(this);
+
+    // GAME STATE
+    eGAME_STATE gameState = eGAME_STATE.PLAY_GAME;
 
 
     // SET PLAYER'S INITIAL POSITION
@@ -165,18 +168,22 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UPDATE GAME STATE
 
-        // UUPDATE LAND
-        land.update();
+        if (gameState == eGAME_STATE.PLAY_GAME) {
+            // UUPDATE LAND
+            land.update();
 
-        // UPDATE SHARKS
-        for (int i = 0; i < sharks.length; i++) {
-            if (sharks[i] != null) {
-                sharks[i].update();
+            // UPDATE SHARKS
+            for (int i = 0; i < sharks.length; i++) {
+                if (sharks[i] != null) {
+                    sharks[i].update();
+                }
             }
-        }
 
-       // UPDATE PLAYER
-        player.update();
+            // UPDATE PLAYER
+            player.update();
+        } else if (gameState == eGAME_STATE.PAUSE_GAME) {
+            // Do nothing
+        }
 
     }
 

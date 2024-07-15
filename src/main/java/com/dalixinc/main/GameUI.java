@@ -36,8 +36,23 @@ public class GameUI {
     }
 
     // MAIN FUNCTIONAL METHOD OF THE GameUI CLASS
-
     public void draw(Graphics2D graphics2d) {
+
+        //this.g2d = graphics2d;  //TODO: Not certain this is required
+
+        //DEFAULT FONT AND COLOUR
+        graphics2d.setFont(arial_40);
+        graphics2d.setColor(Color.WHITE);
+
+        if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
+            drawPlayScreen(graphics2d);
+        }
+        if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
+            drawPauseScreen(graphics2d);
+        }
+
+    }
+    public void drawPlayScreen(Graphics2D graphics2d) {
 
         if (gameOver) {
 
@@ -69,8 +84,11 @@ public class GameUI {
             gamePanel.gameThread = null;
 
         } else {
+            // DEFAULT FONT AND COLOUR
             graphics2d.setColor(Color.WHITE);
             graphics2d.setFont(arial_40);
+
+
             graphics2d.drawImage(lifeImage, gamePanel.tileSize / 2 - 32, gamePanel.tileSize / 2 - 32, gamePanel.tileSize , gamePanel.tileSize , null);
             graphics2d.drawString("= " + gamePanel.player.lives, 74 + 8, 65 + 8);
             //graphics2d.drawString("Keys: " + gamePanel.player.hasKey, 20, 50);
@@ -93,6 +111,20 @@ public class GameUI {
                 }
             }
         }
+    }
 
+    private void drawPauseScreen(Graphics2D graphics2d) {
+        graphics2d.setColor(Color.WHITE);
+        graphics2d.setFont(ariel_80B);
+        String text = "PAUSED";
+        int x = getXforCenteredText(text, graphics2d);
+        int y = gamePanel.screenHeight / 2;
+        graphics2d.drawString(text, x, y);
+    }
+
+    // ToDO: Move this to a utility class
+    private int getXforCenteredText(String text, Graphics2D graphics2d) {
+        int textLength = (int) graphics2d.getFontMetrics().getStringBounds(text, graphics2d).getWidth();
+        return gamePanel.screenWidth / 2 - textLength / 2;
     }
 }

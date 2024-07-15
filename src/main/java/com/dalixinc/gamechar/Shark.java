@@ -86,7 +86,7 @@ public class Shark extends GameChar {
     }
 
     private void getSharkImage() {
-        // Load player images
+        // Load shark images
         String path = "/sprites/shark/";
         try {
             left1 = ImageIO.read( getClass().getResourceAsStream( path + "dork_shark2.png" ) );
@@ -100,7 +100,7 @@ public class Shark extends GameChar {
     }
 
     private void getSharkImages(String leftImg1, String rightImg1) {
-        // Load player images
+        // Load shark images
         String path = "/sprites/shark/";
         try {
             left1 = ImageIO.read( getClass().getResourceAsStream( path + leftImg1 + ".png" ) );

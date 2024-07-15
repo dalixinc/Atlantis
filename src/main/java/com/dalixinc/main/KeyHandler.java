@@ -6,10 +6,17 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
+    // INSTANCE VARIABLES
+    GamePanel gamePanel;
+
     // KEY PRESSED BOOLEANS
     public boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed, escapePressed;
     //DEBUG
     boolean debugToggle = false;
+
+    public KeyHandler(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -45,10 +52,19 @@ public class KeyHandler implements KeyListener {
                     escapePressed = true;
                     System.out.println("Escape key pressed");
                     break;
-
-                // DEBUG TOGGLE
                 case KeyEvent.VK_P:
-                    System.out.println("P key pressed - DEBUG Toggled");
+                    System.out.println("P key pressed - PAUSE");
+                    if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
+                            gamePanel.gameState = eGAME_STATE.PAUSE_GAME;
+                            gamePanel.stopMusic();
+                    } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
+                            gamePanel.gameState = eGAME_STATE.PLAY_GAME;
+                            gamePanel.playMusic(0);
+                    }
+                    break;
+                // DEBUG TOGGLE
+                case KeyEvent.VK_O:
+                    System.out.println("O key pressed - DEBUG Toggled");
                     debugToggle = !debugToggle;
                     break;
                 default:

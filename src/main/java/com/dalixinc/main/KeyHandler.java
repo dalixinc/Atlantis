@@ -6,7 +6,10 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
+    // KEY PRESSED BOOLEANS
     public boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed, escapePressed;
+    //DEBUG
+    boolean debugToggle = false;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -41,6 +44,12 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_ESCAPE:
                     escapePressed = true;
                     System.out.println("Escape key pressed");
+                    break;
+
+                // DEBUG TOGGLE
+                case KeyEvent.VK_P:
+                    System.out.println("P key pressed - DEBUG Toggled");
+                    debugToggle = !debugToggle;
                     break;
                 default:
                     System.out.println("Unregistered Key pressed");

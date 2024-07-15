@@ -18,6 +18,7 @@ public class Player extends GameChar {
     // DEBUG
     boolean showCollisionRect = false;
 
+    // DEATH VS LIVES LOST
     public volatile boolean isDead = false;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
@@ -217,13 +218,13 @@ public class Player extends GameChar {
         }
 
        // g2d.drawImage(img, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
-        System.out.println("ARE YOU DEAD???? " + isDead);
+       // System.out.println("ARE YOU DEAD???? " + isDead);
         if (isDead) {
             g2d.setColor(Color.RED);
             g2d.fillRect(x + solidArea.x, y + solidArea.y, solidArea.width, solidArea.height);
             g2d.setColor(Color.WHITE);
             g2d.drawString("You are DEAD!!", x + 5, y + 32);
-            System.out.println("YOU ARE DEAD!!!");
+            //System.out.println("YOU ARE DEAD!!!");
 
         } else {
             g2d.drawImage(img, x, y, (int) width, (int) height, null);

@@ -183,6 +183,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent( Graphics g ) {
         super.paintComponent( g );
 
+        //DEBUG INFO - BEFORE DRAWING
+        long drawStartTime = 0;
+        if (keyHandler.debugToggle == true) {
+            drawStartTime = System.nanoTime();
+        }
+
         Graphics2D g2d = (Graphics2D) g;
 
         // DRAW LAND
@@ -201,10 +207,25 @@ public class GamePanel extends JPanel implements Runnable {
         // DRAW UI
         gameUI.draw(g2d);
 
+        // DEBUG INFO - AFTER DRAWING
+        if (keyHandler.debugToggle == true) {
 
-        // For Test only
-/*        g2d.setColor( Color.WHITE );
-        g2d.fillRect( playerX, playerY, tileSize, tileSize);*/
+            //ToDo: Explicitly set font
+            long drawEndTime = System.nanoTime();
+            long drawTime = drawEndTime - drawStartTime;
+            g2d.setColor( Color.yellow);
+            g2d.drawString( "Draw Time: " + drawTime / 1_000 + " μs", 10, 440 ); // 1 ms = 1,000 μs
+            System.out.println( "Draw Time: " + drawTime / 1_000 + " μs"); // Divide by 1_000_000  to convert to ms
+            System.out.println( "Draw Time: " + drawTime  + " ns");
+
+            g2d.setColor( Color.WHITE );
+            g2d.drawString( "Player X: " + player.x , 10, 260 );
+            g2d.drawString( "Player Y: " + player.y , 10, 320 );
+            //.drawString( "Player Row: " + player.worldX, 10, 340 );
+            //g2d.drawString( "Player Col: " + player.screenX, 10, 360 );
+            g2d.drawString( "Player Direction: " + player.direction, 10, 380 );
+        }
+
         g2d.dispose();
     }
 

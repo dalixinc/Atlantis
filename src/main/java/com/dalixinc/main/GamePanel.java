@@ -2,7 +2,9 @@ package com.dalixinc.main;
 
 import com.dalixinc.gamechar.Player;
 import com.dalixinc.gamechar.Shark;
+import com.dalixinc.objects.GameObject;
 import com.dalixinc.objects.Land;
+import com.dalixinc.objects.ObjectController;
 import com.dalixinc.utils.Sound;
 
 import javax.swing.*;
@@ -33,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
     // BASIC SETUP
     KeyHandler keyHandler = new KeyHandler(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public ObjectController objectController = new ObjectController(this);
     public GameUI gameUI = new GameUI(this);
     Thread gameThread;
 
@@ -40,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     Player player = new Player(this, keyHandler);
     public Shark[] sharks = new Shark[10];
     Land land = new Land(this);
+    public GameObject[] gameObjects = new GameObject[10];
 
     // GAME STATE
     eGAME_STATE gameState = eGAME_STATE.PLAY_GAME;
@@ -107,6 +111,8 @@ public class GamePanel extends JPanel implements Runnable {
         sharks[4].width = sharks[4].left1.getWidth() * 0.5;
         sharks[4].height = sharks[4].left1.getHeight() * 0.5;
         sharks[4].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[4].width - 60, (int)sharks[4].height - 24);
+
+        objectController.setBeacon();
 
         player.collisionOn = true;
 
@@ -179,6 +185,13 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            // UPDATE BEACON
+            for (int i = 0; i < gameObjects.length; i++) {
+                if (gameObjects[i] != null) {
+                    gameObjects[i].update();
+                }
+            }
+
             // UPDATE PLAYER
             player.update();
         } else if (gameState == eGAME_STATE.PAUSE_GAME) {
@@ -205,6 +218,13 @@ public class GamePanel extends JPanel implements Runnable {
         for( int i = 0; i < sharks.length; i++ ) {
             if (sharks[i]  != null) {
                 sharks[i].draw(g2d);
+            }
+        }
+
+        // DRAW BEACON
+        for (int i = 0; i < gameObjects.length; i++) {
+            if (gameObjects[i] != null) {
+                gameObjects[i].draw(g2d);
             }
         }
 

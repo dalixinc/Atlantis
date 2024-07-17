@@ -1,9 +1,6 @@
 package com.dalixinc.objects;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
-public class ObjLifeIndicator extends SuperObject {
+public class ObjLifeIndicator extends GameObject {
 
     public ObjLifeIndicator() {
         name = "LifeIndicator";

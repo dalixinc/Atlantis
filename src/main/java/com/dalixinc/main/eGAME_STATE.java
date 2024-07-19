@@ -5,6 +5,7 @@ public enum eGAME_STATE {
         MAIN_MENU("Main Menu"),
         PLAY_GAME("Playing"),
         PAUSE_GAME("Pause"),
+        DIALOGUE("Dialogue"),
         GAME_OVER("Hero is dead");
 
     private String state;

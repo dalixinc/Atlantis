@@ -56,10 +56,11 @@ public class KeyHandler implements KeyListener {
                     System.out.println("P key pressed - PAUSE");
                     if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
                             gamePanel.gameState = eGAME_STATE.PAUSE_GAME;
-                            gamePanel.stopMusic();
+                            new Thread(() -> gamePanel.stopMusic()).start();
+
                     } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
                             gamePanel.gameState = eGAME_STATE.PLAY_GAME;
-                            gamePanel.playMusic(0);
+                            new Thread(() -> gamePanel.playMusic(0)).start();
                     }
                     break;
                 // DEBUG TOGGLE

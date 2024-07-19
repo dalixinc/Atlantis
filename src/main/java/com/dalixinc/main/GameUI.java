@@ -19,6 +19,7 @@ public class GameUI {
     double playTime = 0;
 
     //UTILITY FIELDS
+    public String currentDialogue = "";
     DecimalFormat df = new DecimalFormat("#.##");  // 2 decimal places ("#0.00")
 
     //CONSTRUCTOR
@@ -46,9 +47,10 @@ public class GameUI {
 
         if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
             drawPlayScreen(graphics2d);
-        }
-        if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
+        } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
             drawPauseScreen(graphics2d);
+        } else if (gamePanel.gameState == eGAME_STATE.DIALOGUE) {
+            drawDialogueScreen(graphics2d);
         }
 
     }
@@ -120,6 +122,50 @@ public class GameUI {
         int x = getXforCenteredText(text, graphics2d);
         int y = gamePanel.screenHeight / 2;
         graphics2d.drawString(text, x, y);
+    }
+
+    private void drawDialogueScreen(Graphics2D g2d) {
+
+        // WINDOW
+        int x = gamePanel.tileSize * 2;
+        int y = gamePanel.tileSize / 2;
+        int width = gamePanel.screenWidth - gamePanel.tileSize * 4;
+        int height = gamePanel.tileSize * 4;
+        drawSubWindow(g2d, x, y, width, height);
+
+        // DIALOGUE
+        g2d.setFont(g2d.getFont().deriveFont(Font.PLAIN, 28F));
+        x += gamePanel.tileSize; // /2;
+        y += gamePanel.tileSize; // /2;
+
+        for (String line : currentDialogue.split("\n")) {
+            g2d.drawString(line, x, y);
+            y += g2d.getFontMetrics().getHeight();
+        }
+
+/*        graphics2d.setColor(Color.WHITE);
+        graphics2d.setFont(ariel_80B);
+        String text = "DIALOGUE";
+        int x = getXforCenteredText(text, graphics2d);
+        int y = gamePanel.screenHeight / 2;
+        graphics2d.drawString(text, x, y);*/
+    }
+
+    public void drawSubWindow(Graphics2D graphics2d, int x, int y, int width, int height) {
+
+        Color windowBG = new Color(0, 0, 0, 220);
+        graphics2d.setColor(windowBG);
+        graphics2d.fillRoundRect(x, y, width, height, 35, 35);
+        System.out.println("Drawing SubWindow: Color is: " + windowBG.toString());
+
+        Color windowBorder = new Color(255, 255, 255, 255);
+        graphics2d.setColor(windowBorder);
+        graphics2d.setStroke(new BasicStroke(5));
+        graphics2d.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+        /*graphics2d.setColor(Color.BLACK);
+        graphics2d.fillRect(x, y, width, height);
+        graphics2d.setColor(Color.WHITE);
+        graphics2d.drawRect(x, y, width, height);*/
     }
 
     // ToDO: Move this to a utility class

@@ -21,5 +21,12 @@ public class CollisionChecker {
         else return false;
     }
 
+    public boolean checkObjectCollision(Rectangle me, Rectangle them){
+        if (me.intersects(them )) {
+            return true;
+        }
+        else return false;
+    }
+
 
 }

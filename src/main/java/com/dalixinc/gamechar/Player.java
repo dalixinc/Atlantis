@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.dalixinc.main.GamePanel;
 import com.dalixinc.main.KeyHandler;
+import com.dalixinc.main.eGAME_STATE;
 
 
 public class Player extends GameChar {
@@ -99,16 +100,17 @@ public class Player extends GameChar {
                 spriteCounter = 0;
             }
 
-            // CHECK TILE COLLISION
-            ///collisionOn = false; // Not yet used
+            // COLLISION DATA
+            int tempMeX = (int)(solidArea.getX() + x);
+            int tempMeY = (int)(int)(solidArea.getY() + y);
+            Rectangle rMe = new Rectangle(tempMeX, tempMeY, (int)solidArea.getWidth(), (int)solidArea.getHeight());
+
+            // CHECK SHARK COLLISION
             if (collisionOn) {
                 for (int n = 0; n < gamePanel.sharks.length; n++) {
                     if (gamePanel.sharks[n] == null) {
                         continue;
                     }
-                    int tempMeX = (int)(solidArea.getX() + x);
-                    int tempMeY = (int)(int)(solidArea.getY() + y);
-                    Rectangle rMe = new Rectangle(tempMeX, tempMeY, (int)solidArea.getWidth(), (int)solidArea.getHeight());
 
                     int tempX = (int)(gamePanel.sharks[n].x + gamePanel.sharks[n].solidArea.getX());
                     int tempY = (int)(gamePanel.sharks[n].y + gamePanel.sharks[n].solidArea.getY());
@@ -119,42 +121,68 @@ public class Player extends GameChar {
                     if (!isDead && gamePanel.collisionChecker.checkCollision(rMe, rThem)) {
                         isDead = true;
                         lives--;
-                        gamePanel.stopMusic();
+                        new Thread(() -> gamePanel.stopMusic()).start();
+                        new Thread(() -> gamePanel.stopMusic()).start();
+
                         gamePanel.playSFX(8);
 
-                    new Thread() {
-                        @Override
-                        public void run() {
-
-                            try {
-                               Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            if (lives == 0)
-                                gamePanel.gameUI.gameOver = true;
-                            x = (int)(800 * Math.random());
-                            y = (int)(800 * Math.random());
-                            isDead = false;
-                            gamePanel.playMusic(0);
-                        }
-                    }.start();
-
-                    //Usiing anonymous threads
-                    /* new Thread(new Runnable() {
-                            public  void run() {
-                                System.out.println("Runner");
-                            }
-                        }).start();
-
                         new Thread() {
-                            public  void run() {
-                                System.out.println("Runner");
+                            @Override
+                            public void run() {
+                                try {
+                                   Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if (lives == 0)
+                                    gamePanel.gameUI.gameOver = true;
+                                x = (int)(800 * Math.random());
+                                y = (int)(800 * Math.random());
+                                isDead = false;
+                                new Thread(() -> gamePanel.playMusic(0)).start();
                             }
-                        }.start(); */
+                        }.start();
                     }
                 }
             }
+
+            // CHECK OBJECT COLLISION
+            for (int i = 0; i < gamePanel.gameObjects.length; i++) {
+                if (gamePanel.gameObjects[i] == null) {
+                    continue;
+                }
+
+                int tempX = (int)(gamePanel.gameObjects[i].screenX + gamePanel.gameObjects[i].solidArea.getX());
+                int tempY = (int)(gamePanel.gameObjects[i].screenY + gamePanel.gameObjects[i].solidArea.getY());
+                int tempW = (int)(gamePanel.gameObjects[i].solidArea.getWidth());
+                int tempH = (int)(gamePanel.gameObjects[i].solidArea.getHeight());
+                Rectangle rThem = new Rectangle(tempX, tempY, tempW, tempH);
+
+                boolean isCollision = false;
+                isCollision = gamePanel.collisionChecker.checkObjectCollision(rMe, rThem);
+                if (gamePanel.gameObjects[i].playerCollision && isCollision) {
+                    this.x -= 200;
+                    final int dex = i;
+                    Runnable r = () -> {
+                        gamePanel.stopMusic();
+                        utilFunctions.sleep(50);
+                        for (int n = 0; n < 3; n++) {
+                            gamePanel.playSFX(2);
+                            utilFunctions.sleep(200);
+                        }
+                        gamePanel.playMusic(0);
+                        boolean remove = gamePanel.gameObjects[dex].interraction();
+                        if (remove) {
+                            gamePanel.gameObjects[dex] = null;
+                        }
+                    };
+                    Thread t = new Thread(r);
+                    t.setName("Player Collision Thread");
+                    t.start();
+                }
+
+            }
+            utilFunctions.bubbleArray(gamePanel.gameObjects); // moves all active objects to the top of the array
 
 /*            if (spriteCounter > 10) {
                 spriteCounter = 0;
@@ -162,6 +190,8 @@ public class Player extends GameChar {
             }*/
         }
     }
+
+
 
     public void draw(Graphics g2d) {
         // g2d.setColor( Color.WHITE );

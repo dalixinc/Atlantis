@@ -1,10 +1,19 @@
 package com.dalixinc.gamechar;
 
+import com.dalixinc.main.GamePanel;
+import com.dalixinc.utils.UtilFunctions;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GameChar {
 
+
+    // FUNDAMENTAL HELPER CLASSES
+    GamePanel gamePanel;
+
+    UtilFunctions utilFunctions = new UtilFunctions();
+    // POSITION AND MOVEMENT
     public int x, y;
     public int speed;
     public int vSpeed, hSpeed;

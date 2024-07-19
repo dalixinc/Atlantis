@@ -1,5 +1,7 @@
 package com.dalixinc.main;
 
+import com.dalixinc.dialogue.Dialogue;
+import com.dalixinc.dialogue.OpeningDialogue;
 import com.dalixinc.gamechar.Player;
 import com.dalixinc.gamechar.Shark;
 import com.dalixinc.objects.GameObject;
@@ -46,13 +48,16 @@ public class GamePanel extends JPanel implements Runnable {
     public GameObject[] gameObjects = new GameObject[10];
 
     // GAME STATE
-    eGAME_STATE gameState = eGAME_STATE.PLAY_GAME;
+    public eGAME_STATE gameState = eGAME_STATE.PLAY_GAME;
 
 
     // SET PLAYER'S INITIAL POSITION
     int playerX = 100;
     int playerY = 100;
     int playerSpeed = 4;
+
+    // MUSIC
+    volatile boolean isMusicPlaying = false;
 
    public GamePanel() {
 
@@ -257,17 +262,23 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     // SOUND CONTROL
-    public void playMusic(int i) {
-        music.setFile(i);
-        music.play();
-        music.loop();
+    public synchronized void  playMusic(int i) {
+        if (!isMusicPlaying) {
+            music.setFile(i);
+            music.play();
+            music.loop();
+        }
+        isMusicPlaying = true;
     }
 
-    public void stopMusic() {
-        music.stop();
+    public synchronized void  stopMusic() {
+        if (isMusicPlaying) {
+            music.stop();
+        }
+        isMusicPlaying = false;
     }
 
-    public void playSFX(int i) {
+    public synchronized  void playSFX(int i) {
         sfx.setFile(i);
         sfx.play();
     }

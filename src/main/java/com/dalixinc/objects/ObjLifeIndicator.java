@@ -13,4 +13,9 @@ public class ObjLifeIndicator extends GameObject {
        // }
         collision = false;
     }
+
+    @Override
+    public boolean interraction() {
+        return false;
+    }
 }

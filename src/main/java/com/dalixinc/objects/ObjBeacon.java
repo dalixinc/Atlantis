@@ -1,7 +1,11 @@
 package com.dalixinc.objects;
 
+import com.dalixinc.dialogue.Dialogue;
+import com.dalixinc.dialogue.OpeningDialogue;
 import com.dalixinc.main.GamePanel;
+import com.dalixinc.main.eGAME_STATE;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ObjBeacon extends GameObject{
@@ -10,8 +14,6 @@ public class ObjBeacon extends GameObject{
 
     // RELEVANT VARIABLES TO ALL GAME OBJECTS
 
-    public int screenX, screenY;
-    public int worldX, worldY;
     public int speed;
     public int vSpeed, hSpeed;
     public double width, height;
@@ -32,6 +34,11 @@ public class ObjBeacon extends GameObject{
         this.hSpeed = 0;
         this.width = gamePanel.tileSize;
         this.height = gamePanel.tileSize;
+        this.playerCollision = true;
+        this.solidArea = new Rectangle(4, 4, gamePanel.tileSize - 8, gamePanel.tileSize - 8);
+
+        // DEBUG
+        this.showCollisionRect = false;
 
         //GET THE BEACON IMAGES
         beaconImages[0] = utilFunctions.getSpriteImages("/sprites/objects/", "beacon1a");
@@ -41,13 +48,21 @@ public class ObjBeacon extends GameObject{
 
         // SETUP SPRITE COUNTER
         spriteframecount = beaconImages.length;
-        spriteInterval = gamePanel.FPS / 4;
+        spriteInterval = gamePanel.FPS / 4; // / 8;
         spriteCounter = 0;
         spriteNum = 0;
 
     }
+    @Override public boolean interraction() {
+        gamePanel.gameState = eGAME_STATE.DIALOGUE;
+        Dialogue dialog = new OpeningDialogue(gamePanel);
+        dialog.printDialogue();
+        gamePanel.gameState = eGAME_STATE.PLAY_GAME;
+        boolean removeMe = true; //ToDo: Change to a more general solution
+        return removeMe;
+    }
 
-    public void update() {
+    @Override public void update() {
 
         // UPDATE SPRITE
         spriteCounter++;
@@ -60,7 +75,7 @@ public class ObjBeacon extends GameObject{
         }
     }
 
-    public void draw(java.awt.Graphics2D g2d) {
+    @Override public void draw(Graphics2D g2d) {
         BufferedImage img = null;
 
         switch (spriteNum) {
@@ -78,5 +93,10 @@ public class ObjBeacon extends GameObject{
                 break;
         }
         g2d.drawImage(img, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+
+        if (showCollisionRect) {
+            g2d.setColor(Color.RED);
+            g2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+        }
     }
 }

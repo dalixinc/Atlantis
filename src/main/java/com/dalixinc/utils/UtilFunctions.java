@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class UtilFunctions {
 
+    // BUILD A REGULAR SCALABLE IMAGE
     public  BufferedImage getSpriteImages(String path, String imgName) {
         // Load player images
         BufferedImage img = null;
@@ -27,5 +28,29 @@ public class UtilFunctions {
         g2d.drawImage(rawImage, 0, 0, newWidth, newHeight, null);
         g2d.dispose();
         return scaledImage;
+    }
+
+    // SLEEP FOR SOME ms
+    public void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // BUBBLE ALL NON NULL ARRAY ITEMS IN AN ARRAY TO THE BEGINNING OF THE ARRAY
+    public  synchronized void bubbleArray(Object[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == null) {
+                for (int j = i; j < array.length; j++) {
+                    if (array[j] != null) {
+                        array[i] = array[j];
+                        array[j] = null;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

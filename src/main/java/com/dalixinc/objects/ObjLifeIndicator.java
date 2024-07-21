@@ -1,5 +1,7 @@
 package com.dalixinc.objects;
 
+import java.awt.*;
+
 public class ObjLifeIndicator extends GameObject {
 
     public ObjLifeIndicator() {
@@ -17,5 +19,15 @@ public class ObjLifeIndicator extends GameObject {
     @Override
     public boolean interraction() {
         return false;
+    }
+
+    @Override
+    public void update() {
+        // Do nothing
+    }
+
+    @Override
+    public void draw(Graphics2D g2d) {
+        // Do nothing
     }
 }

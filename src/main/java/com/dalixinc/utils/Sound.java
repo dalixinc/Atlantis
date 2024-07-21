@@ -19,7 +19,7 @@ public class Sound {
         soundURLs[4] = getClass().getResource("/sound/fanfare.wav");
         soundURLs[5] = getClass().getResource("/sound/authentication.wav");
         soundURLs[6] = getClass().getResource("/sound/brown-explosion.wav");
-        soundURLs[7] = getClass().getResource("/sound/dun-shot-1.wav");
+        soundURLs[7] = getClass().getResource("/sound/gun-shot-1.wav");
         soundURLs[8] = getClass().getResource("/sound/wilhelm.wav");
         soundURLs[9] = getClass().getResource("/sound/klingon_disruptor_clean.wav");
         soundURLs[10] = getClass().getResource("/sound/pacman_death.wav");

@@ -165,16 +165,20 @@ public class Player extends GameChar {
                     final int dex = i;
                     Runnable r = () -> {
                         gamePanel.stopMusic();
-                        utilFunctions.sleep(50);
-                        for (int n = 0; n < 3; n++) {
+
+/*                        for (int n = 0; n < 3; n++) {
                             gamePanel.playSFX(2);
                             utilFunctions.sleep(200);
-                        }
-                        gamePanel.playMusic(0);
+                        }*/
                         boolean remove = gamePanel.gameObjects[dex].interraction();
                         if (remove) {
                             gamePanel.gameObjects[dex] = null;
+                        } else {
+                            //gamePanel.gameObjects[dex].screenX = gamePanel.screenWidth;
+                            //gamePanel.gameObjects[dex].screenY = gamePanel.screenHeight;
+                            this.y = 32;
                         }
+                        gamePanel.playMusic(0);
                     };
                     Thread t = new Thread(r);
                     t.setName("Player Collision Thread");

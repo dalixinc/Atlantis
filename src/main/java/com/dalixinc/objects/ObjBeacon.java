@@ -18,7 +18,7 @@ public class ObjBeacon extends GameObject{
     public int speed;
     public int vSpeed, hSpeed;
     public double width, height;
-    boolean imageBasedOnSuppliedSize = false;
+
 
     BufferedImage[] beaconImages = new BufferedImage[4];
 
@@ -37,6 +37,7 @@ public class ObjBeacon extends GameObject{
         this.height = gamePanel.tileSize;
         this.playerCollision = true;
         this.solidArea = new Rectangle(4, 4, gamePanel.tileSize - 8, gamePanel.tileSize - 8);
+        imageBasedOnSuppliedSize = false;
 
         // DEBUG
         this.showCollisionRect = false;
@@ -66,6 +67,12 @@ public class ObjBeacon extends GameObject{
 
     }
     @Override public boolean interraction() {
+
+        for (int n = 0; n < 3; n++) {
+            gamePanel.playSFX(2);
+            utilFunctions.sleep(200);
+        }
+        utilFunctions.sleep(50);
         gamePanel.gameState = eGAME_STATE.DIALOGUE;
         Dialogue dialog = new OpeningDialogue(dialogueLines, gamePanel);
         dialog.printDialogue();

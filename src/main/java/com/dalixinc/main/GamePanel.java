@@ -116,6 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
         sharks[4].solidArea = new Rectangle(0 + 32 , 0 + 16, (int)sharks[4].width - 60, (int)sharks[4].height - 24);
 
         objectController.setBeacon();
+        objectController.setSpur();
 
         player.collisionOn = true;
 

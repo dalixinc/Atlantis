@@ -45,11 +45,8 @@ public abstract class GameObject {
 
     public abstract boolean interraction() ;  // This method should be overridden by the subclass
 
-    public void update() {
-        // This method should be overridden by the subclass
-    }
+    public abstract void update(); // This method should be overridden by the subclass
 
-    public void  draw(Graphics2D g2d) {
-        // This method should be overridden by the subclass
-    }
+    public abstract void  draw(Graphics2D g2d); // This method should be overridden by the subclass
+
 }

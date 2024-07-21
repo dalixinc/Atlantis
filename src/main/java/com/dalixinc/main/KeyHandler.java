@@ -46,6 +46,7 @@ public class KeyHandler implements KeyListener {
                     break;
                 case KeyEvent.VK_SPACE:
                     spacePressed = true;
+                    gamePanel.playSFX(9);
                     System.out.println("Space key pressed");
                     break;
                 case KeyEvent.VK_ESCAPE:

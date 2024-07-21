@@ -20,7 +20,7 @@ public class GameChar {
     public double width, height;
     boolean imageBasedOnSuppliedSize = true;
 
-    public BufferedImage right1, right2, right3, right4;
+    public BufferedImage right1, right2, right3, right4; // ToDo - not generic enough
     public String direction ;
 
     public int spriteCounter = 0;

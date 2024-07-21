@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ObjBeacon extends GameObject{
+    private final String[] dialogueLines;
 
     // ToDo - pull out all common vars to the superclass
 
@@ -52,10 +53,21 @@ public class ObjBeacon extends GameObject{
         spriteCounter = 0;
         spriteNum = 0;
 
+        // PROPER ATLANTIS OPENING DIALOGUE
+        dialogueLines = new String[]{
+            "Hey there, brave challenger!!",
+            "We, the peace-loving citizens of the city of\nAtlantis,beg that you help us break the \nshackles of....",
+            "The Evil Trigan Empire\n\nWhose grip grows ever tighter!",
+            "Your task will not be easy, the Trigans\nhave put many powerful deterrents\nin your path.",
+            "And the deep is populated by the most\nfearsome of creatures!",
+            "Your first task is to collect the 4 pieces of\nthe Atlantan Amulet - this will offer some\nprotection as you proceed in this task.",
+            "Artemis III,\n\nAdjudicant, Assembly of Atlantis"
+        };
+
     }
     @Override public boolean interraction() {
         gamePanel.gameState = eGAME_STATE.DIALOGUE;
-        Dialogue dialog = new OpeningDialogue(gamePanel);
+        Dialogue dialog = new OpeningDialogue(dialogueLines, gamePanel);
         dialog.printDialogue();
         gamePanel.gameState = eGAME_STATE.PLAY_GAME;
         boolean removeMe = true; //ToDo: Change to a more general solution

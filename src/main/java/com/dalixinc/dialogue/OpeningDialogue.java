@@ -26,7 +26,7 @@ public class OpeningDialogue extends Dialogue{
             for (String dialogue : dialogues) {
                 gamePanel.gameUI.currentDialogue = dialogue;
                 System.out.println(dialogue);
-                util.sleep(2000);
+                util.sleep(3000);
             }
         }
 }

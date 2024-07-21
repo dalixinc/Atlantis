@@ -4,13 +4,15 @@ import com.dalixinc.objects.ObjLifeIndicator;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.io.InputStream;
 
 public class GameUI {
 
     // AWARENESS FIELDS
     GamePanel gamePanel;
-    Font arial_40, ariel_80B;
+    Font arial_40, ariel_80B, maruMonica, purisaBold, bauhaus, blackadder;
     BufferedImage lifeImage;
     public boolean messageOn = false;
     public String message = "";
@@ -22,11 +24,30 @@ public class GameUI {
     public String currentDialogue = "";
     DecimalFormat df = new DecimalFormat("#.##");  // 2 decimal places ("#0.00")
 
+    // DEBUG
+    boolean fontDebug = false;
+
     //CONSTRUCTOR
     public GameUI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         ariel_80B = new Font("Arial", Font.BOLD, 80);
+
+        // IMPORT FONTS
+        InputStream is = getClass().getResourceAsStream("/fonts/x12y16pxMaruMonica.ttf");
+        try {
+            maruMonica =  Font.createFont(Font.TRUETYPE_FONT, is);
+            is = getClass().getResourceAsStream("/fonts/Purisa Bold.ttf");
+            purisaBold = Font.createFont(Font.TRUETYPE_FONT, is);
+            is = getClass().getResourceAsStream("/fonts/BAUHS93.ttf");
+            bauhaus = Font.createFont(Font.TRUETYPE_FONT, is);
+            is = getClass().getResourceAsStream("/fonts/ITCBLKAD.ttf");
+            blackadder = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ObjLifeIndicator life = new ObjLifeIndicator();
         lifeImage = life.image;
     }
@@ -42,7 +63,9 @@ public class GameUI {
         //this.g2d = graphics2d;  //TODO: Not certain this is required
 
         //DEFAULT FONT AND COLOUR
-        graphics2d.setFont(arial_40);
+        //graphics2d.setFont(maruMonica);  // previously ariel_40
+        graphics2d.setFont(purisaBold);  // previously ariel_40
+        graphics2d.setRenderingHint((RenderingHints.KEY_ANTIALIASING), RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2d.setColor(Color.WHITE);
 
         if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
@@ -127,20 +150,30 @@ public class GameUI {
     private void drawDialogueScreen(Graphics2D g2d) {
 
         // WINDOW
-        int x = gamePanel.tileSize * 2;
+        int x = gamePanel.tileSize * 3; //2
         int y = gamePanel.tileSize / 2;
-        int width = gamePanel.screenWidth - gamePanel.tileSize * 4;
-        int height = gamePanel.tileSize * 4;
-        drawSubWindow(g2d, x, y, width, height);
+        int width = gamePanel.screenWidth - gamePanel.tileSize * 6; //4
+        int height = gamePanel.tileSize * 3; // 4
+        drawSubWindow(g2d, x, y, width, height);  //ToDo - adjust window height (and perhaps width) according to the amount of dialogue
 
         // DIALOGUE
         g2d.setFont(g2d.getFont().deriveFont(Font.PLAIN, 28F));
         x += gamePanel.tileSize; // /2;
         y += gamePanel.tileSize; // /2;
 
+        g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 24F));
+
         for (String line : currentDialogue.split("\n")) {
             g2d.drawString(line, x, y);
             y += g2d.getFontMetrics().getHeight();
+        }
+
+        // FONT DEBUG
+        if (fontDebug) {
+            int size = g2d.getFont().getSize();
+            String name ="\n"+ g2d.getFont().getFontName() + " : " + size;
+            g2d.drawString(name, x, y);
+            //g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 28F));
         }
 
 /*        graphics2d.setColor(Color.WHITE);
@@ -153,7 +186,7 @@ public class GameUI {
 
     public void drawSubWindow(Graphics2D graphics2d, int x, int y, int width, int height) {
 
-        Color windowBG = new Color(0, 0, 0, 220);
+        Color windowBG = new Color(0, 0, 0, 190);
         graphics2d.setColor(windowBG);
         graphics2d.fillRoundRect(x, y, width, height, 35, 35);
         System.out.println("Drawing SubWindow: Color is: " + windowBG.toString());

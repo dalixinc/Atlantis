@@ -161,7 +161,7 @@ public class Player extends GameChar {
                 boolean isCollision = false;
                 isCollision = gamePanel.collisionChecker.checkObjectCollision(rMe, rThem);
                 if (gamePanel.gameObjects[i].playerCollision && isCollision) {
-                    this.x -= 200;
+                    this.x -= 100;
                     final int dex = i;
                     Runnable r = () -> {
                         gamePanel.stopMusic();

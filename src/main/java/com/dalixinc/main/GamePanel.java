@@ -1,7 +1,5 @@
 package com.dalixinc.main;
 
-import com.dalixinc.dialogue.Dialogue;
-import com.dalixinc.dialogue.OpeningDialogue;
 import com.dalixinc.gamechar.Player;
 import com.dalixinc.gamechar.Shark;
 import com.dalixinc.objects.GameObject;

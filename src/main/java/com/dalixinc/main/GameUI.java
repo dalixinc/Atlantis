@@ -1,6 +1,7 @@
 package com.dalixinc.main;
 
 import com.dalixinc.objects.ObjLifeIndicator;
+import com.dalixinc.utils.UtilFunctions;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,7 @@ public class GameUI {
 
     // AWARENESS FIELDS
     GamePanel gamePanel;
+    UtilFunctions utilFunctions = new UtilFunctions();
     Font arial_40, ariel_80B, maruMonica, purisaBold, bauhaus, blackadder;
     BufferedImage lifeImage;
     public boolean messageOn = false;
@@ -23,6 +25,12 @@ public class GameUI {
     //UTILITY FIELDS
     public String currentDialogue = "";
     DecimalFormat df = new DecimalFormat("#.##");  // 2 decimal places ("#0.00")
+
+    // MENU INPUT
+    public int inputNum = 0;
+    private static final int HEADING_SIZE = 80;  // 58
+    private static final int MENU_SIZE = 36; // v24
+    BufferedImage titleImage = utilFunctions.getSpriteImages("/sprites/logos/", "Atlantis_quartersize_logo");
 
     // DEBUG
     boolean fontDebug = false;
@@ -68,15 +76,77 @@ public class GameUI {
         graphics2d.setRenderingHint((RenderingHints.KEY_ANTIALIASING), RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2d.setColor(Color.WHITE);
 
-        if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
+        // MAIN MENU STATE
+        if (gamePanel.gameState == eGAME_STATE.MAIN_MENU) {
+            drawTitleScreen(graphics2d);
+
+            // PLAY GAME STATE
+        } else if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
             drawPlayScreen(graphics2d);
+
+        // PAUSE GAME STATE
         } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
             drawPauseScreen(graphics2d);
+
+        // DIALOGUE STATE
         } else if (gamePanel.gameState == eGAME_STATE.DIALOGUE) {
             drawDialogueScreen(graphics2d);
         }
-
     }
+
+    private void drawTitleScreen(Graphics2D graphics2d) {
+
+        graphics2d.setColor(new Color(0x21, 0x4B, 0, 255));
+        graphics2d.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+
+        // TITLE NAME
+        ///graphics2d.setFont(ariel_80B);
+        graphics2d.setFont(graphics2d.getFont().deriveFont(Font.BOLD, HEADING_SIZE));
+        String text = "PLAY ATLANTIS";
+        int x = getXforCenteredText(text, graphics2d);
+        int y = gamePanel.tileSize * 3;
+
+        // SHADOW
+        graphics2d.setColor(Color.BLACK);
+        graphics2d.drawString(text, x + 5, y + 5);
+
+        // MAIN COLOUR
+        graphics2d.setColor(Color.WHITE);
+        graphics2d.drawString(text, x, y);
+
+        // TITLE IMAGE
+        x = gamePanel.screenWidth / 2 - gamePanel.tileSize;
+        y = gamePanel.tileSize * 4;
+        graphics2d.drawImage(titleImage, x, y, titleImage.getWidth(), titleImage.getHeight(), null);
+
+        // PRESS ENTER
+        graphics2d.setFont(graphics2d.getFont().deriveFont(Font.BOLD, MENU_SIZE));
+
+        text = "NEW GAME";
+        x = getXforCenteredText(text, graphics2d);
+        y += gamePanel.tileSize * 3.5;
+        graphics2d.drawString(text, x, y);
+        if (inputNum == 0) {
+            graphics2d.drawString(">", x - gamePanel.tileSize, y);
+        }
+
+        text = "LOAD GAME";
+        x = getXforCenteredText(text, graphics2d);
+        y += gamePanel.tileSize;
+        graphics2d.drawString(text, x, y);
+        if (inputNum == 1) {
+            graphics2d.drawString(">", x - gamePanel.tileSize, y);
+        }
+
+        text = "EXIT GAME";
+        x = getXforCenteredText(text, graphics2d);
+        y += gamePanel.tileSize;
+        graphics2d.drawString(text, x, y);
+        if (inputNum == 2) {
+            graphics2d.drawString(">", x - gamePanel.tileSize, y);
+        }
+    }
+
     public void drawPlayScreen(Graphics2D graphics2d) {
 
         if (gameOver) {

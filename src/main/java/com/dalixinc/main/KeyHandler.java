@@ -20,8 +20,45 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-            int keyCode = e.getKeyCode();
+        int keyCode = e.getKeyCode();
 
+        // MAIN MENU STATE
+        if (gamePanel.gameState == eGAME_STATE.MAIN_MENU) {
+            switch (keyCode) {
+                case KeyEvent.VK_UP:
+                    gamePanel.gameUI.inputNum--;
+                    if (gamePanel.gameUI.inputNum < 0) gamePanel.gameUI.inputNum = 2;
+                    System.out.println("UP key pressed");
+                    break;
+                case KeyEvent.VK_DOWN:
+                    gamePanel.gameUI.inputNum++;
+                    System.out.println("DOWN key pressed");
+                    if (gamePanel.gameUI.inputNum > 2) gamePanel.gameUI.inputNum = 0;
+                    break;
+                case KeyEvent.VK_ENTER:
+                    switch (gamePanel.gameUI.inputNum) {
+                        case 0:
+                            gamePanel.gameState = eGAME_STATE.PLAY_GAME;
+                            gamePanel.playMusic(0);
+                            break;
+                        case 1:
+                            // Add Later - load game, I think
+                            /*gamePanel.gameState = gamePanel.PLAY_STATE;
+                            gamePanel.playMusic(1);
+                            break;*/
+                        case 2:
+                            System.exit(0);
+                            break;
+                    }
+                    System.out.println("Enter key pressed");
+                    break;
+                default:
+                    System.out.println("Unregistered Key pressed");
+            }
+        }
+
+        // PLAY STATE OR PAUSE STATE
+        else if (gamePanel.gameState == eGAME_STATE.PLAY_GAME || gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
             // Done with a switch statement
             switch (keyCode) {
                 case KeyEvent.VK_W:
@@ -56,12 +93,12 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_P:
                     System.out.println("P key pressed - PAUSE");
                     if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
-                            gamePanel.gameState = eGAME_STATE.PAUSE_GAME;
-                            new Thread(() -> gamePanel.stopMusic()).start();
+                        gamePanel.gameState = eGAME_STATE.PAUSE_GAME;
+                        new Thread(() -> gamePanel.stopMusic()).start();
 
                     } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
-                            gamePanel.gameState = eGAME_STATE.PLAY_GAME;
-                            new Thread(() -> gamePanel.playMusic(0)).start();
+                        gamePanel.gameState = eGAME_STATE.PLAY_GAME;
+                        new Thread(() -> gamePanel.playMusic(0)).start();
                     }
                     break;
                 // DEBUG TOGGLE
@@ -73,6 +110,26 @@ public class KeyHandler implements KeyListener {
                     System.out.println("Unregistered Key pressed");
             }
         }
+
+            // PAUSE STATE
+/*        } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
+            switch (keyCode) {
+                case KeyEvent.VK_P:
+                    System.out.println("P key pressed - PAUSE");
+                    if (gamePanel.gameState == eGAME_STATE.PLAY_GAME) {
+                        gamePanel.gameState = eGAME_STATE.PAUSE_GAME;
+                        new Thread(() -> gamePanel.stopMusic()).start();
+
+                    } else if (gamePanel.gameState == eGAME_STATE.PAUSE_GAME) {
+                        gamePanel.gameState = eGAME_STATE.PLAY_GAME;
+                        new Thread(() -> gamePanel.playMusic(0)).start();
+                    }
+                    break;
+                default:
+                    System.out.println("Unregistered Key pressed");
+            }
+        }*/
+    }
 
     public void keyReleased(KeyEvent e) {
 
@@ -97,7 +154,6 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
         // Not used
     }
-
 
     //ACCESSOR METHODS
 

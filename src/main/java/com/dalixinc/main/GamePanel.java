@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     public GameObject[] gameObjects = new GameObject[10];
 
     // GAME STATE
-    public eGAME_STATE gameState = eGAME_STATE.PLAY_GAME;
+    public volatile eGAME_STATE gameState = eGAME_STATE.MAIN_MENU; // PLAY_GAME
 
 
     // SET PLAYER'S INITIAL POSITION
@@ -121,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable {
         player.collisionOn = true;
 
         // START MUSIC
-        playMusic(0);
+        // - an initial tune, not the backround  - playMusic(0);
 
         System.out.println("Setting up game...");
     }
@@ -179,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
         // UPDATE GAME STATE
 
         if (gameState == eGAME_STATE.PLAY_GAME) {
-            // UUPDATE LAND
+            // UPDATE LAND
             land.update();
 
             // UPDATE SHARKS
@@ -205,7 +205,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void paintComponent( Graphics g ) {
-        super.paintComponent( g );
+        super.paintComponent(g);
 
         //DEBUG INFO - BEFORE DRAWING
         long drawStartTime = 0;
@@ -215,50 +215,57 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        // DRAW LAND
-        land.draw(g2d);
 
-        // DRAW SHARKS
-        for( int i = 0; i < sharks.length; i++ ) {
-            if (sharks[i]  != null) {
-                sharks[i].draw(g2d);
+        // MAIN MENU ONLY
+        if (gameState == gameState.MAIN_MENU) {
+            gameUI.draw(g2d);   //drawTitleScreen
+        } else {
+
+            // DRAW LAND
+            land.draw(g2d);
+
+            // DRAW SHARKS
+            for (int i = 0; i < sharks.length; i++) {
+                if (sharks[i] != null) {
+                    sharks[i].draw(g2d);
+                }
+            }
+
+            // DRAW BEACON
+            for (int i = 0; i < gameObjects.length; i++) {
+                if (gameObjects[i] != null) {
+                    gameObjects[i].draw(g2d);
+                }
+            }
+
+            // DRAW PLAYER
+            player.draw(g2d);
+
+            // DRAW UI
+            gameUI.draw(g2d);
+
+            // DEBUG INFO - AFTER DRAWING
+            if (keyHandler.debugToggle == true) {
+
+                //ToDo: Explicitly set font
+                long drawEndTime = System.nanoTime();
+                long drawTime = drawEndTime - drawStartTime;
+                g2d.setColor(Color.yellow);
+                g2d.drawString("Draw Time: " + drawTime / 1_000 + " μs", 10, 440); // 1 ms = 1,000 μs
+                System.out.println("Draw Time: " + drawTime / 1_000 + " μs"); // Divide by 1_000_000  to convert to ms
+                System.out.println("Draw Time: " + drawTime + " ns");
+
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("Player X: " + player.x, 10, 260);
+                g2d.drawString("Player Y: " + player.y, 10, 320);
+                //.drawString( "Player Row: " + player.worldX, 10, 340 );
+                //g2d.drawString( "Player Col: " + player.screenX, 10, 360 );
+                g2d.drawString("Player Direction: " + player.direction, 10, 380);
             }
         }
-
-        // DRAW BEACON
-        for (int i = 0; i < gameObjects.length; i++) {
-            if (gameObjects[i] != null) {
-                gameObjects[i].draw(g2d);
-            }
-        }
-
-        // DRAW PLAYER
-        player.draw(g2d);
-
-        // DRAW UI
-        gameUI.draw(g2d);
-
-        // DEBUG INFO - AFTER DRAWING
-        if (keyHandler.debugToggle == true) {
-
-            //ToDo: Explicitly set font
-            long drawEndTime = System.nanoTime();
-            long drawTime = drawEndTime - drawStartTime;
-            g2d.setColor( Color.yellow);
-            g2d.drawString( "Draw Time: " + drawTime / 1_000 + " μs", 10, 440 ); // 1 ms = 1,000 μs
-            System.out.println( "Draw Time: " + drawTime / 1_000 + " μs"); // Divide by 1_000_000  to convert to ms
-            System.out.println( "Draw Time: " + drawTime  + " ns");
-
-            g2d.setColor( Color.WHITE );
-            g2d.drawString( "Player X: " + player.x , 10, 260 );
-            g2d.drawString( "Player Y: " + player.y , 10, 320 );
-            //.drawString( "Player Row: " + player.worldX, 10, 340 );
-            //g2d.drawString( "Player Col: " + player.screenX, 10, 360 );
-            g2d.drawString( "Player Direction: " + player.direction, 10, 380 );
-        }
-
         g2d.dispose();
     }
+
 
     // SOUND CONTROL
     public synchronized void  playMusic(int i) {
@@ -281,6 +288,5 @@ public class GamePanel extends JPanel implements Runnable {
         sfx.setFile(i);
         sfx.play();
     }
-
 }
 

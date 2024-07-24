@@ -20,13 +20,13 @@ public class OpeningDialogue extends Dialogue{
         super(dialogues, gamePanel);
     }
 
-        @Override
-        public void printDialogue() {
+    @Override
+    public void printDialogue() {
 
-            for (String dialogue : dialogues) {
-                gamePanel.gameUI.currentDialogue = dialogue;
-                System.out.println(dialogue);
-                util.sleep(3000);
-            }
+        for (String dialogue : dialogues) {
+            gamePanel.gameUI.currentDialogue = dialogue;
+            System.out.println(dialogue);
+            util.sleep(3000);
         }
+    }
 }

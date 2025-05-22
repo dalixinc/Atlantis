@@ -7,8 +7,15 @@ import java.net.URL;
 
 public class Sound {
 
-    Clip clip;
+    // Made package-private for easier replacement in tests if needed, or use setter.
+    // Prefer using the setter for testing.
+    Clip clip; 
     URL[] soundURLs = new URL[30];
+
+    // Setter for injecting a mock Clip during testing
+    public void setClip(Clip clip) {
+        this.clip = clip;
+    }
 
     public Sound() {
 
